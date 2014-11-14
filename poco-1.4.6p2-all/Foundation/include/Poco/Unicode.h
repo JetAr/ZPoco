@@ -62,6 +62,7 @@ public:
     // in sync with those from ucp.h (PCRE).
     enum CharacterCategory
     /// Unicode 5.0 character categories.
+	//z 字符分类
     {
         UCP_OTHER,
         UCP_LETTER,
@@ -73,6 +74,7 @@ public:
     };
 
     enum CharacterType
+	//z 字符类型
     /// Unicode 5.0 character types.
     {
         UCP_CONTROL,
@@ -194,6 +196,7 @@ public:
         UCP_MAX_CODEPOINT = 0x10FFFF
     };
 
+	//z 存放了一个 unicode 字符的字符属性
     struct CharacterProperties
             /// This structure holds the character properties
             /// of an Unicode character.

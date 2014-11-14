@@ -1173,7 +1173,6 @@ extern const int         _pcre_ucp_gentype[];
 
 
 /* UCD access macros */
-
 #define UCD_BLOCK_SIZE 128
 #define GET_UCD(ch) (_pcre_ucd_records + \
         _pcre_ucd_stage2[_pcre_ucd_stage1[(ch) / UCD_BLOCK_SIZE] * \

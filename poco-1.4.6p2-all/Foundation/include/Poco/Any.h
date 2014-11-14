@@ -212,7 +212,6 @@ const ValueType* AnyCast(const Any* operand)
     return AnyCast<ValueType>(const_cast<Any*>(operand));
 }
 
-
 template <typename ValueType>
 ValueType AnyCast(const Any& operand)
 /// AnyCast operator used to extract a copy of the ValueType from an const Any&.
@@ -259,7 +258,6 @@ const ValueType& RefAnyCast(const Any & operand)
     return *result;
 }
 
-
 template <typename ValueType>
 ValueType& RefAnyCast(Any& operand)
 /// AnyCast operator used to return a reference to the internal data.
@@ -284,7 +282,6 @@ ValueType* UnsafeAnyCast(Any* operand)
     return &static_cast<Any::Holder<ValueType>*>(operand->_content)->_held;
 }
 
-
 template <typename ValueType>
 const ValueType* UnsafeAnyCast(const Any* operand)
 /// The "unsafe" versions of AnyCast are not part of the
@@ -295,9 +292,6 @@ const ValueType* UnsafeAnyCast(const Any* operand)
 {
     return AnyCast<ValueType>(const_cast<Any*>(operand));
 }
-
-
 } // namespace Poco
-
 
 #endif
