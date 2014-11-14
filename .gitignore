@@ -29,3 +29,13 @@
 *.exe
 *.out
 *.app
+
+*.user
+*.ncb
+*.suo
+*.exe
+*.htm
+*.idb
+*.manifest
+*.res
+*.dep
