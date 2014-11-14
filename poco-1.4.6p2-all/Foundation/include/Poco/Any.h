@@ -46,8 +46,10 @@
 namespace Poco
 {
 
-
+//z 2014-11-14 虽然看起来只是一个简单的类，但是实际上也有很多不明白的地方
+//z 类似 boost any。看下面注释是从 boost 1.33.1 中摘出来的
 class Any
+	//z 一个 any class 能够表示一个通用类型并且可以存储任何类型。
     /// An Any class represents a general type and is capable of storing any type, supporting type-safe extraction
     /// of the internally stored data.
     ///
@@ -56,11 +58,12 @@ class Any
 {
 public:
     Any():
-        _content(0)
+        _content(0)//z 初始化为NULL
         /// Creates an empty any type.
     {
     }
 
+	//z 使用 Holder 来存放对应的指针。
     template <typename ValueType>
     Any(const ValueType& value):
         _content(new Holder<ValueType>(value))
@@ -86,12 +89,12 @@ public:
     Any& swap(Any& rhs)
     /// Swaps the content of the two Anys.
     {
-        std::swap(_content, rhs._content);
+        std::swap(_content, rhs._content);//z 调用stl中的swap函数
         return *this;
     }
 
     template <typename ValueType>
-    Any& operator = (const ValueType& rhs)
+    Any& operator = (const ValueType& rhs)//z 赋值操作
     /// Assignment operator for all types != Any.
     ///
     /// Example:
@@ -109,13 +112,13 @@ public:
         return *this;
     }
 
-    bool empty() const
+    bool empty() const //z 判断是否为空
     /// returns true if the Any is empty
     {
         return !_content;
     }
 
-    const std::type_info& type() const
+    const std::type_info& type() const //z 获取内部值类型
     /// Returns the type information of the stored content.
     /// If the Any is empty typeid(void) is returned.
     /// It is suggested to always query an Any for its type info before trying to extract
@@ -125,26 +128,36 @@ public:
     }
 
 private:
-    class Placeholder
+    class Placeholder //z 为什么要实现这样的一个类了？用作接口，看起来预留了 type 以及 clone 这样两个接口。
     {
     public:
+		//z 由于用于继承，所以这里声明为 virtual 。
         virtual ~Placeholder()
         {
         }
 
-        virtual const std::type_info& type() const = 0;
+        //z 在这里返回其类型
+		virtual const std::type_info& type() const = 0;
+		//z 返回一个 Placeholder 实例（从下继承而来）
         virtual Placeholder* clone() const = 0;
     };
-
+	
+	//z 类模版
     template <typename ValueType>
     class Holder: public Placeholder
     {
     public:
+		//z 在 Holder 中存放的值
         Holder(const ValueType& value):
             _held(value)
         {
         }
 
+		/*
+		写下这样的语句时 type_info ti = typeid(double); 会产生如下的错误：
+		error C2248: “type_info::type_info”: 无法访问 private 成员(在“type_info”类中声明)
+		*/
+		//z 返回 type_info
         virtual const std::type_info& type() const
         {
             return typeid(ValueType);
@@ -152,13 +165,16 @@ private:
 
         virtual Placeholder* clone() const
         {
+			//z 直接生成一个 Holder 来存放对应的信息
             return new Holder(_held);
         }
 
+		//z 值类型
         ValueType _held;
     };
 
 private:
+	//z 声明了两个友元函数
     template <typename ValueType>
     friend ValueType* AnyCast(Any*);
 
@@ -167,7 +183,6 @@ private:
 
     Placeholder* _content;
 };
-
 
 template <typename ValueType>
 ValueType* AnyCast(Any* operand)
@@ -178,12 +193,13 @@ ValueType* AnyCast(Any* operand)
 ///     MyType* pTmp = AnyCast<MyType*>(pAny).
 /// Will return NULL if the cast fails, i.e. types don't match.
 {
-    return operand && operand->type() == typeid(ValueType)
-           ? &static_cast<Any::Holder<ValueType>*>(operand->_content)->_held
+    return operand //z 如果 operand 不为空
+		&& operand->type() == typeid(ValueType) //z 查看两者的类型是否相等
+           ? &static_cast<Any::Holder<ValueType>*>(operand->_content)->_held //z 返回其所hold的类型。写成这样也是蛮累的说
            : 0;
 }
 
-
+//z 对const类型进行cast处理
 template <typename ValueType>
 const ValueType* AnyCast(const Any* operand)
 /// AnyCast operator used to extract a const ValueType pointer from an const Any*. Will return a const pointer
