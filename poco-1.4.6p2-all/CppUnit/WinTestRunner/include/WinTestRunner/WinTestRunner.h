@@ -27,7 +27,8 @@
 #include <afxwin.h>
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 class Test;
@@ -36,37 +37,37 @@ class Test;
 class WinTestRunner_API WinTestRunner
 {
 public:
-	WinTestRunner();
-	~WinTestRunner();
+    WinTestRunner();
+    ~WinTestRunner();
 
-	void run();
-	void addTest(Test* pTest);
-	
+    void run();
+    void addTest(Test* pTest);
+
 private:
-	std::vector<Test*> _tests;
+    std::vector<Test*> _tests;
 };
 
 
 class WinTestRunner_API WinTestRunnerApp: public CWinApp
-	/// A simple application class that hosts the TestRunner dialog.
-	/// Create a subclass and override the TestMain() method.
-	///
-	/// WinTestRunnerApp supports a batch mode, which runs the
-	/// test using the standard text-based TestRunner from CppUnit.
-	/// To enable batch mode, start the application with the "/b"
-	/// or "/B" argument. Optionally, a filename may be specified
-	/// where the test output will be written to: "/b:<path>" or
-	/// "/B:<path>".
-	///
-	/// When run in batch mode, the exit code of the application
-	/// will denote test success (0) or failure (1).
+    /// A simple application class that hosts the TestRunner dialog.
+    /// Create a subclass and override the TestMain() method.
+    ///
+    /// WinTestRunnerApp supports a batch mode, which runs the
+    /// test using the standard text-based TestRunner from CppUnit.
+    /// To enable batch mode, start the application with the "/b"
+    /// or "/B" argument. Optionally, a filename may be specified
+    /// where the test output will be written to: "/b:<path>" or
+    /// "/B:<path>".
+    ///
+    /// When run in batch mode, the exit code of the application
+    /// will denote test success (0) or failure (1).
 {
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	virtual void TestMain() = 0;
+    virtual void TestMain() = 0;
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 

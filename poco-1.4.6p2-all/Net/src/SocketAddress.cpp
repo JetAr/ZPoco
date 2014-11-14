@@ -52,16 +52,18 @@ using Poco::UInt16;
 using Poco::InvalidArgumentException;
 
 
-namespace Poco {
-namespace Net {
+namespace Poco
+{
+namespace Net
+{
 
 
 struct AFLT
 {
-	bool operator () (const IPAddress& a1, const IPAddress& a2)
-	{
-		return a1.af() < a2.af();
-	}
+    bool operator () (const IPAddress& a1, const IPAddress& a2)
+    {
+        return a1.af() < a2.af();
+    }
 };
 
 
@@ -73,83 +75,83 @@ struct AFLT
 class SocketAddressImpl: public RefCountedObject
 {
 public:
-	virtual IPAddress host() const = 0;
-	virtual UInt16 port() const = 0;
-	virtual poco_socklen_t length() const = 0;
-	virtual const struct sockaddr* addr() const = 0;
-	virtual int af() const = 0;
+    virtual IPAddress host() const = 0;
+    virtual UInt16 port() const = 0;
+    virtual poco_socklen_t length() const = 0;
+    virtual const struct sockaddr* addr() const = 0;
+    virtual int af() const = 0;
 
 protected:
-	SocketAddressImpl()
-	{
+    SocketAddressImpl()
+    {
 #if defined(_WIN32)
-		Poco::Net::initializeNetwork();
+        Poco::Net::initializeNetwork();
 #endif
-	}
+    }
 
-	virtual ~SocketAddressImpl()
-	{
+    virtual ~SocketAddressImpl()
+    {
 #if defined(_WIN32)
-		Poco::Net::uninitializeNetwork();
+        Poco::Net::uninitializeNetwork();
 #endif
-	}
+    }
 
 private:
-	SocketAddressImpl(const SocketAddressImpl&);
-	SocketAddressImpl& operator = (const SocketAddressImpl&);
+    SocketAddressImpl(const SocketAddressImpl&);
+    SocketAddressImpl& operator = (const SocketAddressImpl&);
 };
 
 
 class IPv4SocketAddressImpl: public SocketAddressImpl
 {
 public:
-	IPv4SocketAddressImpl()
-	{
-		std::memset(&_addr, 0, sizeof(_addr));
-		_addr.sin_family = AF_INET;
-		poco_set_sin_len(&_addr);
-	}
+    IPv4SocketAddressImpl()
+    {
+        std::memset(&_addr, 0, sizeof(_addr));
+        _addr.sin_family = AF_INET;
+        poco_set_sin_len(&_addr);
+    }
 
-	IPv4SocketAddressImpl(const struct sockaddr_in* addr)
-	{
-		std::memcpy(&_addr, addr, sizeof(_addr));
-	}
+    IPv4SocketAddressImpl(const struct sockaddr_in* addr)
+    {
+        std::memcpy(&_addr, addr, sizeof(_addr));
+    }
 
-	IPv4SocketAddressImpl(const void* addr, UInt16 port)
-	{
-		std::memset(&_addr, 0, sizeof(_addr));
-		_addr.sin_family = AF_INET;
-		std::memcpy(&_addr.sin_addr, addr, sizeof(_addr.sin_addr));
-		_addr.sin_port = port;
-	}
+    IPv4SocketAddressImpl(const void* addr, UInt16 port)
+    {
+        std::memset(&_addr, 0, sizeof(_addr));
+        _addr.sin_family = AF_INET;
+        std::memcpy(&_addr.sin_addr, addr, sizeof(_addr.sin_addr));
+        _addr.sin_port = port;
+    }
 
-	IPAddress host() const
-	{
-		return IPAddress(&_addr.sin_addr, sizeof(_addr.sin_addr));
-	}
+    IPAddress host() const
+    {
+        return IPAddress(&_addr.sin_addr, sizeof(_addr.sin_addr));
+    }
 
-	UInt16 port() const
-	{
-		return _addr.sin_port;
-	}
+    UInt16 port() const
+    {
+        return _addr.sin_port;
+    }
 
-	poco_socklen_t length() const
-	{
-		return sizeof(_addr);
-	}
+    poco_socklen_t length() const
+    {
+        return sizeof(_addr);
+    }
 
-	const struct sockaddr* addr() const
-	{
-		return reinterpret_cast<const struct sockaddr*>(&_addr);
-	}
+    const struct sockaddr* addr() const
+    {
+        return reinterpret_cast<const struct sockaddr*>(&_addr);
+    }
 
-	int af() const
-	{
-		return _addr.sin_family;
-	}
+    int af() const
+    {
+        return _addr.sin_family;
+    }
 
 private:
-	struct sockaddr_in _addr;
+    struct sockaddr_in _addr;
 };
 
 
@@ -159,57 +161,57 @@ private:
 class IPv6SocketAddressImpl: public SocketAddressImpl
 {
 public:
-	IPv6SocketAddressImpl(const struct sockaddr_in6* addr)
-	{
-		std::memcpy(&_addr, addr, sizeof(_addr));
-	}
+    IPv6SocketAddressImpl(const struct sockaddr_in6* addr)
+    {
+        std::memcpy(&_addr, addr, sizeof(_addr));
+    }
 
-	IPv6SocketAddressImpl(const void* addr, UInt16 port)
-	{
-		std::memset(&_addr, 0, sizeof(_addr));
-		_addr.sin6_family = AF_INET6;
-		poco_set_sin6_len(&_addr);
-		std::memcpy(&_addr.sin6_addr, addr, sizeof(_addr.sin6_addr));
-		_addr.sin6_port = port;
-	}
+    IPv6SocketAddressImpl(const void* addr, UInt16 port)
+    {
+        std::memset(&_addr, 0, sizeof(_addr));
+        _addr.sin6_family = AF_INET6;
+        poco_set_sin6_len(&_addr);
+        std::memcpy(&_addr.sin6_addr, addr, sizeof(_addr.sin6_addr));
+        _addr.sin6_port = port;
+    }
 
-	IPv6SocketAddressImpl(const void* addr, UInt16 port, UInt32 scope)
-	{
-		std::memset(&_addr, 0, sizeof(_addr));
-		_addr.sin6_family = AF_INET6;
-		poco_set_sin6_len(&_addr);
-		std::memcpy(&_addr.sin6_addr, addr, sizeof(_addr.sin6_addr));
-		_addr.sin6_port = port;
-		_addr.sin6_scope_id = scope;
-	}
+    IPv6SocketAddressImpl(const void* addr, UInt16 port, UInt32 scope)
+    {
+        std::memset(&_addr, 0, sizeof(_addr));
+        _addr.sin6_family = AF_INET6;
+        poco_set_sin6_len(&_addr);
+        std::memcpy(&_addr.sin6_addr, addr, sizeof(_addr.sin6_addr));
+        _addr.sin6_port = port;
+        _addr.sin6_scope_id = scope;
+    }
 
-	IPAddress host() const
-	{
-		return IPAddress(&_addr.sin6_addr, sizeof(_addr.sin6_addr), _addr.sin6_scope_id);
-	}
+    IPAddress host() const
+    {
+        return IPAddress(&_addr.sin6_addr, sizeof(_addr.sin6_addr), _addr.sin6_scope_id);
+    }
 
-	UInt16 port() const
-	{
-		return _addr.sin6_port;
-	}
+    UInt16 port() const
+    {
+        return _addr.sin6_port;
+    }
 
-	poco_socklen_t length() const
-	{
-		return sizeof(_addr);
-	}
+    poco_socklen_t length() const
+    {
+        return sizeof(_addr);
+    }
 
-	const struct sockaddr* addr() const
-	{
-		return reinterpret_cast<const struct sockaddr*>(&_addr);
-	}
+    const struct sockaddr* addr() const
+    {
+        return reinterpret_cast<const struct sockaddr*>(&_addr);
+    }
 
-	int af() const
-	{
-		return _addr.sin6_family;
-	}
+    int af() const
+    {
+        return _addr.sin6_family;
+    }
 
 private:
-	struct sockaddr_in6 _addr;
+    struct sockaddr_in6 _addr;
 };
 
 
@@ -223,210 +225,211 @@ private:
 
 SocketAddress::SocketAddress()
 {
-	_pImpl = new IPv4SocketAddressImpl;
+    _pImpl = new IPv4SocketAddressImpl;
 }
 
 
 SocketAddress::SocketAddress(const IPAddress& addr, Poco::UInt16 port)
 {
-	init(addr, port);
+    init(addr, port);
 }
 
 
 SocketAddress::SocketAddress(const std::string& addr, Poco::UInt16 port)
 {
-	init(addr, port);
+    init(addr, port);
 }
 
 
 SocketAddress::SocketAddress(const std::string& addr, const std::string& port)
 {
-	init(addr, resolveService(port));
+    init(addr, resolveService(port));
 }
 
 
 SocketAddress::SocketAddress(const std::string& hostAndPort)
 {
-	poco_assert (!hostAndPort.empty());
+    poco_assert (!hostAndPort.empty());
 
-	std::string host;
-	std::string port;
-	std::string::const_iterator it  = hostAndPort.begin();
-	std::string::const_iterator end = hostAndPort.end();
-	if (*it == '[')
-	{
-		++it;
-		while (it != end && *it != ']') host += *it++;
-		if (it == end) throw InvalidArgumentException("Malformed IPv6 address");
-		++it;
-	}
-	else
-	{
-		while (it != end && *it != ':') host += *it++;
-	}
-	if (it != end && *it == ':')
-	{
-		++it;
-		while (it != end) port += *it++;
-	}
-	else throw InvalidArgumentException("Missing port number");
-	init(host, resolveService(port));
+    std::string host;
+    std::string port;
+    std::string::const_iterator it  = hostAndPort.begin();
+    std::string::const_iterator end = hostAndPort.end();
+    if (*it == '[')
+    {
+        ++it;
+        while (it != end && *it != ']') host += *it++;
+        if (it == end) throw InvalidArgumentException("Malformed IPv6 address");
+        ++it;
+    }
+    else
+    {
+        while (it != end && *it != ':') host += *it++;
+    }
+    if (it != end && *it == ':')
+    {
+        ++it;
+        while (it != end) port += *it++;
+    }
+    else throw InvalidArgumentException("Missing port number");
+    init(host, resolveService(port));
 }
 
 
 SocketAddress::SocketAddress(const SocketAddress& addr)
 {
-	_pImpl = addr._pImpl;
-	_pImpl->duplicate();
+    _pImpl = addr._pImpl;
+    _pImpl->duplicate();
 }
 
 
 SocketAddress::SocketAddress(const struct sockaddr* addr, poco_socklen_t length)
 {
-	if (length == sizeof(struct sockaddr_in))
-		_pImpl = new IPv4SocketAddressImpl(reinterpret_cast<const struct sockaddr_in*>(addr));
+    if (length == sizeof(struct sockaddr_in))
+        _pImpl = new IPv4SocketAddressImpl(reinterpret_cast<const struct sockaddr_in*>(addr));
 #if defined(POCO_HAVE_IPv6)
-	else if (length == sizeof(struct sockaddr_in6))
-		_pImpl = new IPv6SocketAddressImpl(reinterpret_cast<const struct sockaddr_in6*>(addr));
+    else if (length == sizeof(struct sockaddr_in6))
+        _pImpl = new IPv6SocketAddressImpl(reinterpret_cast<const struct sockaddr_in6*>(addr));
 #endif
-	else throw Poco::InvalidArgumentException("Invalid address length passed to SocketAddress()");
+    else throw Poco::InvalidArgumentException("Invalid address length passed to SocketAddress()");
 }
 
 
 SocketAddress::~SocketAddress()
 {
-	_pImpl->release();
+    _pImpl->release();
 }
 
 
 bool SocketAddress::operator < (const SocketAddress& addr) const
 {
-	if (family() < addr.family()) return true;
-	if (family() > addr.family()) return false;
-	if (host() < addr.host()) return true;
-	if (host() > addr.host()) return false;
-	return (port() < addr.port());
+    if (family() < addr.family()) return true;
+    if (family() > addr.family()) return false;
+    if (host() < addr.host()) return true;
+    if (host() > addr.host()) return false;
+    return (port() < addr.port());
 }
 
 
 SocketAddress& SocketAddress::operator = (const SocketAddress& addr)
 {
-	if (&addr != this)
-	{
-		_pImpl->release();
-		_pImpl = addr._pImpl;
-		_pImpl->duplicate();
-	}
-	return *this;
+    if (&addr != this)
+    {
+        _pImpl->release();
+        _pImpl = addr._pImpl;
+        _pImpl->duplicate();
+    }
+    return *this;
 }
 
 
 void SocketAddress::swap(SocketAddress& addr)
 {
-	std::swap(_pImpl, addr._pImpl);
+    std::swap(_pImpl, addr._pImpl);
 }
 
 
 IPAddress SocketAddress::host() const
 {
-	return _pImpl->host();
+    return _pImpl->host();
 }
 
 
 Poco::UInt16 SocketAddress::port() const
 {
-	return ntohs(_pImpl->port());
+    return ntohs(_pImpl->port());
 }
 
 
 poco_socklen_t SocketAddress::length() const
 {
-	return _pImpl->length();
+    return _pImpl->length();
 }
 
 
 const struct sockaddr* SocketAddress::addr() const
 {
-	return _pImpl->addr();
+    return _pImpl->addr();
 }
 
 
 int SocketAddress::af() const
 {
-	return _pImpl->af();
+    return _pImpl->af();
 }
 
 
 std::string SocketAddress::toString() const
 {
-	std::string result;
-	if (host().family() == IPAddress::IPv6)
-		result.append("[");
-	result.append(host().toString());
-	if (host().family() == IPAddress::IPv6)
-		result.append("]");
-	result.append(":");
-	NumberFormatter::append(result, port());
-	return result;
+    std::string result;
+    if (host().family() == IPAddress::IPv6)
+        result.append("[");
+    result.append(host().toString());
+    if (host().family() == IPAddress::IPv6)
+        result.append("]");
+    result.append(":");
+    NumberFormatter::append(result, port());
+    return result;
 }
 
 
 void SocketAddress::init(const IPAddress& host, Poco::UInt16 port)
 {
-	if (host.family() == IPAddress::IPv4)
-		_pImpl = new IPv4SocketAddressImpl(host.addr(), htons(port));
+    if (host.family() == IPAddress::IPv4)
+        _pImpl = new IPv4SocketAddressImpl(host.addr(), htons(port));
 #if defined(POCO_HAVE_IPv6)
-	else if (host.family() == IPAddress::IPv6)
-		_pImpl = new IPv6SocketAddressImpl(host.addr(), htons(port), host.scope());
+    else if (host.family() == IPAddress::IPv6)
+        _pImpl = new IPv6SocketAddressImpl(host.addr(), htons(port), host.scope());
 #endif
-	else throw Poco::NotImplementedException("unsupported IP address family");
+    else throw Poco::NotImplementedException("unsupported IP address family");
 }
 
 
 void SocketAddress::init(const std::string& host, Poco::UInt16 port)
 {
-	IPAddress ip;
-	if (IPAddress::tryParse(host, ip))
-	{
-		init(ip, port);
-	}
-	else
-	{
-		HostEntry he = DNS::hostByName(host);
-		HostEntry::AddressList addresses = he.addresses();
-		if (addresses.size() > 0)
-		{
+    IPAddress ip;
+    if (IPAddress::tryParse(host, ip))
+    {
+        init(ip, port);
+    }
+    else
+    {
+        HostEntry he = DNS::hostByName(host);
+        HostEntry::AddressList addresses = he.addresses();
+        if (addresses.size() > 0)
+        {
 #if defined(POCO_HAVE_IPv6)
-			// if we get both IPv4 and IPv6 addresses, prefer IPv4
-			std::sort(addresses.begin(), addresses.end(), AFLT());
+            // if we get both IPv4 and IPv6 addresses, prefer IPv4
+            std::sort(addresses.begin(), addresses.end(), AFLT());
 #endif
-			init(addresses[0], port);
-		}
-		else throw HostNotFoundException("No address found for host", host);
-	}
+            init(addresses[0], port);
+        }
+        else throw HostNotFoundException("No address found for host", host);
+    }
 }
 
 
 Poco::UInt16 SocketAddress::resolveService(const std::string& service)
 {
-	unsigned port;
-	if (NumberParser::tryParseUnsigned(service, port) && port <= 0xFFFF)
-	{
-		return (UInt16) port;
-	}
-	else
-	{
+    unsigned port;
+    if (NumberParser::tryParseUnsigned(service, port) && port <= 0xFFFF)
+    {
+        return (UInt16) port;
+    }
+    else
+    {
 #if defined(POCO_VXWORKS)
-		throw ServiceNotFoundException(service);
+        throw ServiceNotFoundException(service);
 #else
-		struct servent* se = getservbyname(service.c_str(), NULL);
-		if (se)
-			return ntohs(se->s_port);
-		else
-			throw ServiceNotFoundException(service);
+        struct servent* se = getservbyname(service.c_str(), NULL);
+        if (se)
+            return ntohs(se->s_port);
+        else
+            throw ServiceNotFoundException(service);
 #endif
-	}
+    }
 }
 
 
-} } // namespace Poco::Net
+}
+} // namespace Poco::Net

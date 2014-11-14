@@ -56,21 +56,21 @@
 class ActiveDispatcherTest: public CppUnit::TestCase
 {
 public:
-	ActiveDispatcherTest(const std::string& name);
-	~ActiveDispatcherTest();
+    ActiveDispatcherTest(const std::string& name);
+    ~ActiveDispatcherTest();
 
-	void testWait();
-	void testWaitInterval();
-	void testTryWait();
-	void testFailure();
-	void testVoid();
-	void testVoidIn();
-	void testVoidInOut();
+    void testWait();
+    void testWaitInterval();
+    void testTryWait();
+    void testFailure();
+    void testVoid();
+    void testVoidIn();
+    void testVoidInOut();
 
-	void setUp();
-	void tearDown();
+    void setUp();
+    void tearDown();
 
-	static CppUnit::Test* suite();
+    static CppUnit::Test* suite();
 
 private:
 };

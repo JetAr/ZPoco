@@ -18,7 +18,8 @@
 #include "afxwin.h"
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 class ProgressBar;
@@ -27,8 +28,8 @@ class ProgressBar;
 class TestRunnerDlg: public CDialog
 {
 public:
-	TestRunnerDlg(CWnd* pParent = NULL);
-	~TestRunnerDlg();
+    TestRunnerDlg(CWnd* pParent = NULL);
+    ~TestRunnerDlg();
 
     void setTests(const std::vector<Test*>& tests);
 
@@ -39,11 +40,11 @@ public:
 
     //{{AFX_DATA(TestRunnerDlg)
     enum { IDD = IDD_DIALOG_TESTRUNNER };
-        // NOTE: the ClassWizard will add data members here
+    // NOTE: the ClassWizard will add data members here
     //}}AFX_DATA
 
     //{{AFX_VIRTUAL(TestRunnerDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
@@ -54,7 +55,7 @@ protected:
     afx_msg void OnStop();
     virtual void OnOK();
     afx_msg void OnSelchangeComboTest();
-	afx_msg void OnBnClickedAutorun();
+    afx_msg void OnBnClickedAutorun();
     afx_msg void OnPaint();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
@@ -66,13 +67,13 @@ protected:
     void reset();
     void freeState();
     void updateCountsDisplay();
-	void addTest(Test* pTest, int level);
+    void addTest(Test* pTest, int level);
 
-	struct TestInfo
-	{
-		Test* pTest;
-		int   level;
-	};
+    struct TestInfo
+    {
+        Test* pTest;
+        int   level;
+    };
     std::vector<TestInfo> _tests;
     ProgressBar* _testsProgress;
     Test*        _selectedTest;

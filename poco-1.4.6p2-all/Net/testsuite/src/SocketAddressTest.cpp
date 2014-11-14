@@ -57,97 +57,97 @@ SocketAddressTest::~SocketAddressTest()
 
 void SocketAddressTest::testSocketAddress()
 {
-	SocketAddress wild;
-	assert (wild.host().isWildcard());
-	assert (wild.port() == 0);
+    SocketAddress wild;
+    assert (wild.host().isWildcard());
+    assert (wild.port() == 0);
 
-	SocketAddress sa1("192.168.1.100", 100);
-	assert (sa1.host().toString() == "192.168.1.100");
-	assert (sa1.port() == 100);
+    SocketAddress sa1("192.168.1.100", 100);
+    assert (sa1.host().toString() == "192.168.1.100");
+    assert (sa1.port() == 100);
 
-	SocketAddress sa2("192.168.1.100", "100");
-	assert (sa2.host().toString() == "192.168.1.100");
-	assert (sa2.port() == 100);
+    SocketAddress sa2("192.168.1.100", "100");
+    assert (sa2.host().toString() == "192.168.1.100");
+    assert (sa2.port() == 100);
 
 #if !defined(_WIN32_WCE)
-	SocketAddress sa3("192.168.1.100", "ftp");
-	assert (sa3.host().toString() == "192.168.1.100");
-	assert (sa3.port() == 21);
+    SocketAddress sa3("192.168.1.100", "ftp");
+    assert (sa3.host().toString() == "192.168.1.100");
+    assert (sa3.port() == 21);
 #endif
 
-	try
-	{
-		SocketAddress sa3("192.168.1.100", "f00bar");
-		fail("bad service name - must throw");
-	}
-	catch (ServiceNotFoundException&)
-	{
-	}
+    try
+    {
+        SocketAddress sa3("192.168.1.100", "f00bar");
+        fail("bad service name - must throw");
+    }
+    catch (ServiceNotFoundException&)
+    {
+    }
 
-	SocketAddress sa4("www.appinf.com", 80);
-	assert (sa4.host().toString() == "50.57.108.29");
-	assert (sa4.port() == 80);
+    SocketAddress sa4("www.appinf.com", 80);
+    assert (sa4.host().toString() == "50.57.108.29");
+    assert (sa4.port() == 80);
 
-	try
-	{
-		SocketAddress sa5("192.168.2.260", 80);
-		fail("invalid address - must throw");
-	}
-	catch (HostNotFoundException&)
-	{
-	}
-	catch (NoAddressFoundException&)
-	{
-	}
+    try
+    {
+        SocketAddress sa5("192.168.2.260", 80);
+        fail("invalid address - must throw");
+    }
+    catch (HostNotFoundException&)
+    {
+    }
+    catch (NoAddressFoundException&)
+    {
+    }
 
-	try
-	{
-		SocketAddress sa6("192.168.2.120", "80000");
-		fail("invalid port - must throw");
-	}
-	catch (ServiceNotFoundException&)
-	{
-	}
+    try
+    {
+        SocketAddress sa6("192.168.2.120", "80000");
+        fail("invalid port - must throw");
+    }
+    catch (ServiceNotFoundException&)
+    {
+    }
 
-	SocketAddress sa7("192.168.2.120:88");
-	assert (sa7.host().toString() == "192.168.2.120");
-	assert (sa7.port() == 88);
+    SocketAddress sa7("192.168.2.120:88");
+    assert (sa7.host().toString() == "192.168.2.120");
+    assert (sa7.port() == 88);
 
-	SocketAddress sa8("[192.168.2.120]:88");
-	assert (sa8.host().toString() == "192.168.2.120");
-	assert (sa8.port() == 88);
+    SocketAddress sa8("[192.168.2.120]:88");
+    assert (sa8.host().toString() == "192.168.2.120");
+    assert (sa8.port() == 88);
 
-	try
-	{
-		SocketAddress sa9("[192.168.2.260]");
-		fail("invalid address - must throw");
-	}
-	catch (InvalidArgumentException&)
-	{
-	}
+    try
+    {
+        SocketAddress sa9("[192.168.2.260]");
+        fail("invalid address - must throw");
+    }
+    catch (InvalidArgumentException&)
+    {
+    }
 
-	try
-	{
-		SocketAddress sa9("[192.168.2.260:88");
-		fail("invalid address - must throw");
-	}
-	catch (InvalidArgumentException&)
-	{
-	}
+    try
+    {
+        SocketAddress sa9("[192.168.2.260:88");
+        fail("invalid address - must throw");
+    }
+    catch (InvalidArgumentException&)
+    {
+    }
 }
 
 
 void SocketAddressTest::testRelationals()
 {
-	SocketAddress sa1("192.168.1.100", 100);
+    SocketAddress sa1("192.168.1.100", 100);
     SocketAddress sa2("192.168.1.100:100");
-	assert (sa1 == sa2);
+    assert (sa1 == sa2);
 
     SocketAddress sa3("192.168.1.101", "99");
-	assert (sa2 < sa3);
+    assert (sa2 < sa3);
 
-	SocketAddress sa4("192.168.1.101", "102");
-	assert (sa3 < sa4);
+    SocketAddress sa4("192.168.1.101", "102");
+    assert (sa3 < sa4);
 }
 
 
@@ -170,11 +170,11 @@ void SocketAddressTest::tearDown()
 
 CppUnit::Test* SocketAddressTest::suite()
 {
-	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("SocketAddressTest");
+    CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("SocketAddressTest");
 
-	CppUnit_addTest(pSuite, SocketAddressTest, testSocketAddress);
-	CppUnit_addTest(pSuite, SocketAddressTest, testRelationals);
-	CppUnit_addTest(pSuite, SocketAddressTest, testSocketAddress6);
+    CppUnit_addTest(pSuite, SocketAddressTest, testSocketAddress);
+    CppUnit_addTest(pSuite, SocketAddressTest, testRelationals);
+    CppUnit_addTest(pSuite, SocketAddressTest, testSocketAddress6);
 
-	return pSuite;
+    return pSuite;
 }

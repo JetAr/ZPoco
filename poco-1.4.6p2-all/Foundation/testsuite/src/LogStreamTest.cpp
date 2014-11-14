@@ -71,21 +71,21 @@ LogStreamTest::~LogStreamTest()
 
 void LogStreamTest::testLogStream()
 {
-	AutoPtr<TestChannel> pChannel = new TestChannel;
-	Logger& root = Logger::root();
-	root.setChannel(pChannel.get());
+    AutoPtr<TestChannel> pChannel = new TestChannel;
+    Logger& root = Logger::root();
+    root.setChannel(pChannel.get());
 
-	LogStream ls(root);
+    LogStream ls(root);
 
-	ls << "information" << ' ' << 1 << std::endl;
-	assert (pChannel->list().begin()->getPriority() == Message::PRIO_INFORMATION);
-	assert (pChannel->list().begin()->getText() == "information 1");
-	pChannel->list().clear();
+    ls << "information" << ' ' << 1 << std::endl;
+    assert (pChannel->list().begin()->getPriority() == Message::PRIO_INFORMATION);
+    assert (pChannel->list().begin()->getText() == "information 1");
+    pChannel->list().clear();
 
-	ls.error() << "error" << std::endl;
-	assert (pChannel->list().begin()->getPriority() == Message::PRIO_ERROR);
-	assert (pChannel->list().begin()->getText() == "error");
-	pChannel->list().clear();
+    ls.error() << "error" << std::endl;
+    assert (pChannel->list().begin()->getPriority() == Message::PRIO_ERROR);
+    assert (pChannel->list().begin()->getText() == "error");
+    pChannel->list().clear();
 }
 
 
@@ -101,9 +101,9 @@ void LogStreamTest::tearDown()
 
 CppUnit::Test* LogStreamTest::suite()
 {
-	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("LogStreamTest");
+    CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("LogStreamTest");
 
-	CppUnit_addTest(pSuite, LogStreamTest, testLogStream);
+    CppUnit_addTest(pSuite, LogStreamTest, testLogStream);
 
-	return pSuite;
+    return pSuite;
 }

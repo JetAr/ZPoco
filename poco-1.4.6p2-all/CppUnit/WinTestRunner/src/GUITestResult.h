@@ -14,7 +14,8 @@
 #include <afxmt.h>
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 class TestRunnerDlg;
@@ -23,33 +24,33 @@ class TestRunnerDlg;
 class GUITestResult: public TestResult
 {
 public:
-	GUITestResult(TestRunnerDlg* runner);
-	~GUITestResult();
+    GUITestResult(TestRunnerDlg* runner);
+    ~GUITestResult();
 
-	void addError(Test* test, CppUnitException* e);
-	void addFailure(Test* test, CppUnitException* e);
+    void addError(Test* test, CppUnitException* e);
+    void addFailure(Test* test, CppUnitException* e);
 
-	void startTest(Test* test);
-	void endTest(Test* test);
-	void stop();
+    void startTest(Test* test);
+    void endTest(Test* test);
+    void stop();
 
 protected:
-	class LightweightSynchronizationObject: public TestResult::SynchronizationObject
-	{
-	public:
-		void lock()
-		{
-			_syncObject.Lock();
-		}
-		
-		void unlock()
-		{
-			_syncObject.Unlock();
-		}
-		
-	private:
-		CCriticalSection _syncObject;
-	};
+    class LightweightSynchronizationObject: public TestResult::SynchronizationObject
+    {
+    public:
+        void lock()
+        {
+            _syncObject.Lock();
+        }
+
+        void unlock()
+        {
+            _syncObject.Unlock();
+        }
+
+    private:
+        CCriticalSection _syncObject;
+    };
 
 private:
     TestRunnerDlg *_runner;
@@ -58,9 +59,9 @@ private:
 
 
 // Construct with lightweight synchronization
-inline GUITestResult::GUITestResult(TestRunnerDlg* runner): _runner(runner) 
+inline GUITestResult::GUITestResult(TestRunnerDlg* runner): _runner(runner)
 {
-	setSynchronizationObject(new LightweightSynchronizationObject());
+    setSynchronizationObject(new LightweightSynchronizationObject());
 }
 
 
@@ -73,7 +74,7 @@ inline GUITestResult::~GUITestResult()
 // Override without protection to prevent deadlock
 inline void GUITestResult::stop()
 {
-	_stop = true; 
+    _stop = true;
 }
 
 

@@ -56,15 +56,15 @@
 class LogStreamTest: public CppUnit::TestCase
 {
 public:
-	LogStreamTest(const std::string& name);
-	~LogStreamTest();
+    LogStreamTest(const std::string& name);
+    ~LogStreamTest();
 
-	void testLogStream();
+    void testLogStream();
 
-	void setUp();
-	void tearDown();
+    void setUp();
+    void tearDown();
 
-	static CppUnit::Test* suite();
+    static CppUnit::Test* suite();
 
 private:
 };

@@ -8,7 +8,8 @@
 #include "CppUnit/CppUnitException.h"
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 const std::string CppUnitException::CPPUNIT_UNKNOWNFILENAME = "<unknown>";

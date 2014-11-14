@@ -50,32 +50,32 @@
 * Description:
 *
 * Return:
-*       
+*
 * Reference:
 *   IEEE 1003.1, 2004 Edition
 *******************************************************************************/
 
 void* wceex_lfind(const void *key, const void *base, size_t *nmemb, size_t size,
-                 int(*compar)(const void *, const void *))
+                  int(*compar)(const void *, const void *))
 {
-	char *element, *end;
+    char *element, *end;
 
     assert(key != NULL);
     assert(base != NULL);
     assert(compar != NULL);
 
     element = NULL;
-	end = (char *)base + (*nmemb * size);
+    end = (char *)base + (*nmemb * size);
 
-	for (element = (char *)base; element < end; element += size)
+    for (element = (char *)base; element < end; element += size)
     {
-		if (!compar(element, key))
+        if (!compar(element, key))
         {
             /* key found */
-			return element;
+            return element;
         }
     }
 
-	return NULL;
+    return NULL;
 }
 

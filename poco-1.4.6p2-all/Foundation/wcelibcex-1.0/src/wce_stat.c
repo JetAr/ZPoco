@@ -9,11 +9,11 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation 
+ * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom 
+ * and/or sell copies of the Software, and to permit persons to whom
  * the Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
@@ -116,7 +116,7 @@ int wceex_stat(const char* filename, struct stat *buffer)
 
         //Time of last modification
         if(!FileTimeToLocalFileTime( &findbuf.ftLastWriteTime, &LocalFTime) ||
-            !FileTimeToSystemTime(&LocalFTime, &SystemTime))
+                !FileTimeToSystemTime(&LocalFTime, &SystemTime))
         {
             //errno = ::GetLastError();
             FindClose( findhandle );
@@ -129,7 +129,7 @@ int wceex_stat(const char* filename, struct stat *buffer)
         if(findbuf.ftLastAccessTime.dwLowDateTime || findbuf.ftLastAccessTime.dwHighDateTime)
         {
             if(!FileTimeToLocalFileTime(&findbuf.ftLastAccessTime, &LocalFTime) ||
-                !FileTimeToSystemTime(&LocalFTime, &SystemTime))
+                    !FileTimeToSystemTime(&LocalFTime, &SystemTime))
             {
                 //errno = ::GetLastError();
                 FindClose( findhandle );
@@ -147,7 +147,7 @@ int wceex_stat(const char* filename, struct stat *buffer)
         if(findbuf.ftCreationTime.dwLowDateTime || findbuf.ftCreationTime.dwHighDateTime)
         {
             if(!FileTimeToLocalFileTime(&findbuf.ftCreationTime, &LocalFTime) ||
-                !FileTimeToSystemTime(&LocalFTime, &SystemTime))
+                    !FileTimeToSystemTime(&LocalFTime, &SystemTime))
             {
                 //errno = ::GetLastError();
                 FindClose( findhandle );
@@ -208,8 +208,8 @@ static unsigned short __wceex_get_file_mode(const char* filename, int attr)
 
     /* Check to see if this is a directory. */
     file_mode = (unsigned short)
-        (((IS_SLASH(*p) && !p[1]) || (mode & FILE_ATTRIBUTE_DIRECTORY) || !*p)
-        ? S_IFDIR | S_IEXEC : S_IFREG);
+                (((IS_SLASH(*p) && !p[1]) || (mode & FILE_ATTRIBUTE_DIRECTORY) || !*p)
+                 ? S_IFDIR | S_IEXEC : S_IFREG);
 
     /* Check if attribute byte does have read-only bit, otherwise it is read-write. */
     file_mode |= (mode & FILE_ATTRIBUTE_READONLY) ? S_IREAD : (S_IREAD | S_IWRITE);
@@ -218,9 +218,9 @@ static unsigned short __wceex_get_file_mode(const char* filename, int attr)
     if (p = strrchr(filename, '.'))
     {
         if (!_stricmp(p, ".exe") ||
-            !_stricmp(p, ".cmd") ||
-            !_stricmp(p, ".bat") ||
-            !_stricmp(p, ".com"))
+                !_stricmp(p, ".cmd") ||
+                !_stricmp(p, ".bat") ||
+                !_stricmp(p, ".com"))
             file_mode |= S_IEXEC;
     }
 

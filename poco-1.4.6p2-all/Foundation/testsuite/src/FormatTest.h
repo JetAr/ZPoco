@@ -56,23 +56,23 @@
 class FormatTest: public CppUnit::TestCase
 {
 public:
-	FormatTest(const std::string& name);
-	~FormatTest();
+    FormatTest(const std::string& name);
+    ~FormatTest();
 
-	void testChar();
-	void testInt();
-	void testBool();
-	void testAnyInt();
-	void testFloatFix();
-	void testFloatSci();
-	void testString();
-	void testMultiple();
-	void testIndex();
+    void testChar();
+    void testInt();
+    void testBool();
+    void testAnyInt();
+    void testFloatFix();
+    void testFloatSci();
+    void testString();
+    void testMultiple();
+    void testIndex();
 
-	void setUp();
-	void tearDown();
+    void setUp();
+    void tearDown();
 
-	static CppUnit::Test* suite();
+    static CppUnit::Test* suite();
 
 private:
 };

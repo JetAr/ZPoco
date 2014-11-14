@@ -9,11 +9,11 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation 
+ * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom 
+ * and/or sell copies of the Software, and to permit persons to whom
  * the Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
@@ -50,49 +50,49 @@ extern "C" {
 #ifndef _STAT_T_DEFINED
 struct stat
 {
-	/* Drive number of the disk containing the file (same as st_rdev). */
-	unsigned int st_dev;
+    /* Drive number of the disk containing the file (same as st_rdev). */
+    unsigned int st_dev;
 
-	/*
+    /*
      * Number of the information node (the inode) for the file (UNIX-specific).
      * On UNIX file systems, the inode describes the file date and time stamps, permissions, and content.
-     * When files are hard-linked to one another, they share the same inode. 
+     * When files are hard-linked to one another, they share the same inode.
      * The inode, and therefore st_ino, has no meaning in the FAT, HPFS, or NTFS file systems.
      */
-	unsigned short st_ino;
+    unsigned short st_ino;
 
-	/*
+    /*
      * Bit mask for file-mode information. The _S_IFDIR bit is set if path specifies a directory;
-	 * the _S_IFREG bit is set if path specifies an ordinary file or a device. 
-	 * User read/write bits are set according to the file's permission mode;
+     * the _S_IFREG bit is set if path specifies an ordinary file or a device.
+     * User read/write bits are set according to the file's permission mode;
      * user execute bits are set according to the filename extension.
      */
     unsigned short st_mode;
 
-	/* Always 1 on non-NTFS file systems. */
-	short st_nlink;
+    /* Always 1 on non-NTFS file systems. */
+    short st_nlink;
 
-	/*
+    /*
      * Numeric identifier of user who owns file (UNIX-specific).
      * This field will always be zero on Windows NT systems.
-	 * A redirected file is classified as a Windows NT file.
+     * A redirected file is classified as a Windows NT file.
      */
-	short st_uid;
-	
+    short st_uid;
+
     /*
      * Numeric identifier of group that owns file (UNIX-specific).
      * This field will always be zero on Windows NT systems.
      * A redirected file is classified as a Windows NT file
      */
-	short st_gid;
+    short st_gid;
 
-	/* Drive number of the disk containing the file (same as st_dev) */
-	unsigned int st_rdev;
+    /* Drive number of the disk containing the file (same as st_dev) */
+    unsigned int st_rdev;
 
-	long st_size;    /* Size of the file in bytes */
-	time_t st_atime; /* Time of last access of file */
-	time_t st_mtime; /* Time of last modification of file */
-	time_t st_ctime; /* Time of creation of file */
+    long st_size;    /* Size of the file in bytes */
+    time_t st_atime; /* Time of last access of file */
+    time_t st_mtime; /* Time of last modification of file */
+    time_t st_ctime; /* Time of creation of file */
 };
 # define _STAT_T_DEFINED
 #endif
@@ -108,7 +108,7 @@ struct stat
 
 /* Permission bits */
 #define	S_ISUID	         04000	       /* Set user ID on execution.  */
-#define	S_ISGID	         02000	       /* Set group ID on execution.  */ 
+#define	S_ISGID	         02000	       /* Set group ID on execution.  */
 #define S_IREAD        0000400         /* Read permission, owner */
 #define S_IWRITE       0000200         /* Write permission, owner */
 #define S_IEXEC        0000100         /* Execute/search permission, owner */

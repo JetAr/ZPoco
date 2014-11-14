@@ -271,5 +271,5 @@ them both to 0; an emulation function will be used. */
 /* #undef size_t */
 
 #if defined(_MSC_VER)
-	#pragma warning(disable:4018) // signed/unsigned comparison
+#pragma warning(disable:4018) // signed/unsigned comparison
 #endif

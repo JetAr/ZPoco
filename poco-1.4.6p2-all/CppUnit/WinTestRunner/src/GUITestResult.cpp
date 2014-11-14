@@ -9,7 +9,8 @@
 #include "GUITestResult.h"
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 void GUITestResult::addError(Test *test, CppUnitException *e)

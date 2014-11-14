@@ -45,125 +45,126 @@
 #include <sstream>
 
 
-namespace Poco {
+namespace Poco
+{
 
 
 class TempFileCollector
 {
 public:
-	TempFileCollector()
-	{
-	}
+    TempFileCollector()
+    {
+    }
 
-	~TempFileCollector()
-	{
-		for (std::set<std::string>::iterator it = _files.begin(); it != _files.end(); ++it)
-		{
-			try
-			{
-				File f(*it);
-				f.remove(true);
-			}
-			catch (Exception&)
-			{
-			}
-		}
-	}
+    ~TempFileCollector()
+    {
+        for (std::set<std::string>::iterator it = _files.begin(); it != _files.end(); ++it)
+        {
+            try
+            {
+                File f(*it);
+                f.remove(true);
+            }
+            catch (Exception&)
+            {
+            }
+        }
+    }
 
-	void registerFile(const std::string& path)
-	{
-		FastMutex::ScopedLock lock(_mutex);
+    void registerFile(const std::string& path)
+    {
+        FastMutex::ScopedLock lock(_mutex);
 
-		Path p(path);
-		_files.insert(p.absolute().toString());
-	}
+        Path p(path);
+        _files.insert(p.absolute().toString());
+    }
 
 private:
-	std::set<std::string> _files;
-	FastMutex             _mutex;
+    std::set<std::string> _files;
+    FastMutex             _mutex;
 };
 
 
-TemporaryFile::TemporaryFile(): 
-	File(tempName()), 
-	_keep(false)
+TemporaryFile::TemporaryFile():
+    File(tempName()),
+    _keep(false)
 {
 }
 
 
-TemporaryFile::TemporaryFile(const std::string& tempDir): 
-	File(tempName(tempDir)), 
-	_keep(false)
+TemporaryFile::TemporaryFile(const std::string& tempDir):
+    File(tempName(tempDir)),
+    _keep(false)
 {
 }
 
 
 TemporaryFile::~TemporaryFile()
 {
-	if (!_keep)
-	{
-		try
-		{
-			if (exists())
-				remove(true);
-		}
-		catch (Exception&)
-		{
-		}
-	}
+    if (!_keep)
+    {
+        try
+        {
+            if (exists())
+                remove(true);
+        }
+        catch (Exception&)
+        {
+        }
+    }
 }
 
 
 void TemporaryFile::keep()
 {
-	_keep = true;
+    _keep = true;
 }
 
 
 void TemporaryFile::keepUntilExit()
 {
-	_keep = true;
-	registerForDeletion(path());
-}
-
-
-namespace 
-{
-	static TempFileCollector fc;
-}
-
-
-void TemporaryFile::registerForDeletion(const std::string& path)
-{
-	fc.registerFile(path);
+    _keep = true;
+    registerForDeletion(path());
 }
 
 
 namespace
 {
-	static FastMutex mutex;
+static TempFileCollector fc;
+}
+
+
+void TemporaryFile::registerForDeletion(const std::string& path)
+{
+    fc.registerFile(path);
+}
+
+
+namespace
+{
+static FastMutex mutex;
 }
 
 
 std::string TemporaryFile::tempName(const std::string& tempDir)
 {
-	std::ostringstream name;
-	static unsigned long count = 0;
-	mutex.lock();
-	unsigned long n = count++;
-	mutex.unlock();
-	name << (tempDir.empty() ? Path::temp() : tempDir);
+    std::ostringstream name;
+    static unsigned long count = 0;
+    mutex.lock();
+    unsigned long n = count++;
+    mutex.unlock();
+    name << (tempDir.empty() ? Path::temp() : tempDir);
 #if defined(POCO_VXWORKS)
-	name << "tmp";
+    name << "tmp";
 #else
-	name << "tmp" << Process::id();
+    name << "tmp" << Process::id();
 #endif
-	for (int i = 0; i < 6; ++i)
-	{
-		name << char('a' + (n % 26));
-		n /= 26;
-	}
-	return name.str();
+    for (int i = 0; i < 6; ++i)
+    {
+        name << char('a' + (n % 26));
+        n /= 26;
+    }
+    return name.str();
 }
 
 

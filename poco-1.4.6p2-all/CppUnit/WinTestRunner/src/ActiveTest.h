@@ -14,7 +14,8 @@
 #include <afxmt.h>
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 /* A Microsoft-specific active test
@@ -35,8 +36,8 @@ namespace CppUnit {
 class ActiveTest: public TestDecorator
 {
 public:
-	ActiveTest(Test* test);
-	~ActiveTest();
+    ActiveTest(Test* test);
+    ~ActiveTest();
 
     void run(TestResult* result);
 
@@ -54,30 +55,30 @@ protected:
 // Construct the active test
 inline ActiveTest::ActiveTest(Test *test): TestDecorator(test)
 {
-	_currentTestResult = NULL; 
-	_threadHandle = INVALID_HANDLE_VALUE;
+    _currentTestResult = NULL;
+    _threadHandle = INVALID_HANDLE_VALUE;
 }
 
 
 // Pend until the test has completed
 inline ActiveTest::~ActiveTest()
 {
-	CSingleLock(&_runCompleted, TRUE); 
-	CloseHandle(_threadHandle);
+    CSingleLock(&_runCompleted, TRUE);
+    CloseHandle(_threadHandle);
 }
 
 
 // Set the test result that we are to run
 inline void ActiveTest::setTestResult(TestResult* result)
 {
-	_currentTestResult = result; 
+    _currentTestResult = result;
 }
 
 
 // Run our test result
 inline void ActiveTest::run()
 {
-	TestDecorator::run(_currentTestResult);
+    TestDecorator::run(_currentTestResult);
 }
 
 

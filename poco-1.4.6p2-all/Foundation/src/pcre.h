@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define PCRE_MAJOR          7
 #define PCRE_MINOR          8
-#define PCRE_PRERELEASE     
+#define PCRE_PRERELEASE
 #define PCRE_DATE           2008-09-05
 
 /* When an application links to a PCRE DLL in Windows, the symbols that are
@@ -211,13 +211,14 @@ const char *. */
 such as way as to be extensible. Always add new fields at the end, in order to
 remain compatible. */
 
-typedef struct pcre_extra {
-  unsigned long int flags;        /* Bits for which fields are set */
-  void *study_data;               /* Opaque data from pcre_study() */
-  unsigned long int match_limit;  /* Maximum number of calls to match() */
-  void *callout_data;             /* Data passed back in callouts */
-  const unsigned char *tables;    /* Pointer to character tables */
-  unsigned long int match_limit_recursion; /* Max recursive calls to match() */
+typedef struct pcre_extra
+{
+    unsigned long int flags;        /* Bits for which fields are set */
+    void *study_data;               /* Opaque data from pcre_study() */
+    unsigned long int match_limit;  /* Maximum number of calls to match() */
+    void *callout_data;             /* Data passed back in callouts */
+    const unsigned char *tables;    /* Pointer to character tables */
+    unsigned long int match_limit_recursion; /* Max recursive calls to match() */
 } pcre_extra;
 
 /* The structure for passing out data via the pcre_callout_function. We use a
@@ -225,22 +226,23 @@ structure so that new fields can be added on the end in future versions,
 without changing the API of the function, thereby allowing old clients to work
 without modification. */
 
-typedef struct pcre_callout_block {
-  int          version;           /* Identifies version of block */
-  /* ------------------------ Version 0 ------------------------------- */
-  int          callout_number;    /* Number compiled into pattern */
-  int         *offset_vector;     /* The offset vector */
-  PCRE_SPTR    subject;           /* The subject being matched */
-  int          subject_length;    /* The length of the subject */
-  int          start_match;       /* Offset to start of this match attempt */
-  int          current_position;  /* Where we currently are in the subject */
-  int          capture_top;       /* Max current capture */
-  int          capture_last;      /* Most recently closed capture */
-  void        *callout_data;      /* Data passed in with the call */
-  /* ------------------- Added for Version 1 -------------------------- */
-  int          pattern_position;  /* Offset to next item in the pattern */
-  int          next_item_length;  /* Length of next item in the pattern */
-  /* ------------------------------------------------------------------ */
+typedef struct pcre_callout_block
+{
+    int          version;           /* Identifies version of block */
+    /* ------------------------ Version 0 ------------------------------- */
+    int          callout_number;    /* Number compiled into pattern */
+    int         *offset_vector;     /* The offset vector */
+    PCRE_SPTR    subject;           /* The subject being matched */
+    int          subject_length;    /* The length of the subject */
+    int          start_match;       /* Offset to start of this match attempt */
+    int          current_position;  /* Where we currently are in the subject */
+    int          capture_top;       /* Max current capture */
+    int          capture_last;      /* Most recently closed capture */
+    void        *callout_data;      /* Data passed in with the call */
+    /* ------------------- Added for Version 1 -------------------------- */
+    int          pattern_position;  /* Offset to next item in the pattern */
+    int          next_item_length;  /* Length of next item in the pattern */
+    /* ------------------------------------------------------------------ */
 } pcre_callout_block;
 
 /* Indirection for store get and free functions. These can be set to
@@ -266,31 +268,31 @@ PCRE_EXP_DECL int   pcre_callout(pcre_callout_block *);
 /* Exported PCRE functions */
 
 PCRE_EXP_DECL pcre *pcre_compile(const char *, int, const char **, int *,
-                  const unsigned char *);
+                                 const unsigned char *);
 PCRE_EXP_DECL pcre *pcre_compile2(const char *, int, int *, const char **,
-                  int *, const unsigned char *);
+                                  int *, const unsigned char *);
 PCRE_EXP_DECL int  pcre_config(int, void *);
 PCRE_EXP_DECL int  pcre_copy_named_substring(const pcre *, const char *,
-                  int *, int, const char *, char *, int);
+        int *, int, const char *, char *, int);
 PCRE_EXP_DECL int  pcre_copy_substring(const char *, int *, int, int, char *,
-                  int);
+                                       int);
 PCRE_EXP_DECL int  pcre_dfa_exec(const pcre *, const pcre_extra *,
-                  const char *, int, int, int, int *, int , int *, int);
+                                 const char *, int, int, int, int *, int , int *, int);
 PCRE_EXP_DECL int  pcre_exec(const pcre *, const pcre_extra *, PCRE_SPTR,
-                   int, int, int, int *, int);
+                             int, int, int, int *, int);
 PCRE_EXP_DECL void pcre_free_substring(const char *);
 PCRE_EXP_DECL void pcre_free_substring_list(const char **);
 PCRE_EXP_DECL int  pcre_fullinfo(const pcre *, const pcre_extra *, int,
-                  void *);
+                                 void *);
 PCRE_EXP_DECL int  pcre_get_named_substring(const pcre *, const char *,
-                  int *, int, const char *, const char **);
+        int *, int, const char *, const char **);
 PCRE_EXP_DECL int  pcre_get_stringnumber(const pcre *, const char *);
 PCRE_EXP_DECL int  pcre_get_stringtable_entries(const pcre *, const char *,
-                  char **, char **);
+        char **, char **);
 PCRE_EXP_DECL int  pcre_get_substring(const char *, int *, int, int,
-                  const char **);
+                                      const char **);
 PCRE_EXP_DECL int  pcre_get_substring_list(const char *, int *, int,
-                  const char ***);
+        const char ***);
 PCRE_EXP_DECL int  pcre_info(const pcre *, int *, int *);
 PCRE_EXP_DECL const unsigned char *pcre_maketables(void);
 PCRE_EXP_DECL int  pcre_refcount(pcre *, int);

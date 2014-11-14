@@ -9,11 +9,11 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation 
+ * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom 
+ * and/or sell copies of the Software, and to permit persons to whom
  * the Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
@@ -67,12 +67,12 @@ typedef unsigned long fsize_t;
 #ifndef _FINDDATA_T_DEFINED
 struct _finddata_t
 {
-        unsigned    attrib;         /* File attributes */
-        time_t      time_create;    /* -1L for FAT file systems */
-        time_t      time_access;    /* -1L for FAT file systems */
-        time_t      time_write;     /* Time of last modification */
-        fsize_t     size;           /* Size of file in bytes */
-        char        name[MAX_PATH]; /* Name of file witout complete path */
+    unsigned    attrib;         /* File attributes */
+    time_t      time_create;    /* -1L for FAT file systems */
+    time_t      time_access;    /* -1L for FAT file systems */
+    time_t      time_write;     /* Time of last modification */
+    fsize_t     size;           /* Size of file in bytes */
+    char        name[MAX_PATH]; /* Name of file witout complete path */
 };
 # define _FINDDATA_T_DEFINED
 #endif

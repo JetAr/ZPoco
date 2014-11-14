@@ -8,7 +8,8 @@
 #include "ProgressBar.h"
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 // Paint the progress bar in response to a paint message
@@ -63,7 +64,7 @@ void ProgressBar::paintStatus (CDC& dc)
 
     CBrush      brshStatus;
     CRect       rect (_bounds.left, _bounds.top,
-                    _bounds.left + _progressX, _bounds.bottom);
+                      _bounds.left + _progressX, _bounds.bottom);
 
     COLORREF    statusColor = getStatusColor ();
 

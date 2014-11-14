@@ -17,13 +17,14 @@
 #include "TestRunnerDlg.h"
 
 
-namespace CppUnit {
+namespace CppUnit
+{
 
 
 TestRunnerDlg::TestRunnerDlg(CWnd* pParent): CDialog(TestRunnerDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(TestRunnerDlg)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
 
     _testsProgress     = 0;
@@ -34,10 +35,10 @@ TestRunnerDlg::TestRunnerDlg(CWnd* pParent): CDialog(TestRunnerDlg::IDD, pParent
 
 void TestRunnerDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(TestRunnerDlg)
-	// NOTE: the ClassWizard will add DDX and DDV calls here
-	//}}AFX_DATA_MAP
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(TestRunnerDlg)
+    // NOTE: the ClassWizard will add DDX and DDV calls here
+    //}}AFX_DATA_MAP
 }
 
 
@@ -46,7 +47,7 @@ BEGIN_MESSAGE_MAP(TestRunnerDlg, CDialog)
     ON_BN_CLICKED(ID_RUN, OnRun)
     ON_BN_CLICKED(ID_STOP, OnStop)
     ON_CBN_SELCHANGE(IDC_COMBO_TEST, OnSelchangeComboTest)
-	ON_BN_CLICKED(IDC_CHK_AUTORUN, OnBnClickedAutorun)
+    ON_BN_CLICKED(IDC_CHK_AUTORUN, OnBnClickedAutorun)
     ON_WM_PAINT()
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -54,81 +55,81 @@ END_MESSAGE_MAP()
 
 BOOL TestRunnerDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
+    CDialog::OnInitDialog();
 
-	CListCtrl   *listCtrl = (CListCtrl *)GetDlgItem (IDC_LIST);
-	CComboBox   *comboBox = (CComboBox *)GetDlgItem (IDC_COMBO_TEST);
+    CListCtrl   *listCtrl = (CListCtrl *)GetDlgItem (IDC_LIST);
+    CComboBox   *comboBox = (CComboBox *)GetDlgItem (IDC_COMBO_TEST);
 
-	ASSERT (listCtrl);
-	ASSERT (comboBox);
+    ASSERT (listCtrl);
+    ASSERT (comboBox);
 
-	CString title;
-	GetWindowText(title);
+    CString title;
+    GetWindowText(title);
 #if defined(_DEBUG)
-	title.Append(" [debug]");
+    title.Append(" [debug]");
 #else
-	title.Append(" [release]");
+    title.Append(" [release]");
 #endif
-	SetWindowText(title);
+    SetWindowText(title);
 
-	listCtrl->InsertColumn (0,"Type", LVCFMT_LEFT, 16 + listCtrl->GetStringWidth ("Type"), 1);
-	listCtrl->InsertColumn (1,"Name", LVCFMT_LEFT, 16 * listCtrl->GetStringWidth ("X"), 2);
-	listCtrl->InsertColumn (2,"Failed Condition", LVCFMT_LEFT, 24 * listCtrl->GetStringWidth ("M"), 3);
-	listCtrl->InsertColumn (3,"Line", LVCFMT_LEFT, 16 + listCtrl->GetStringWidth ("0000"), 4);
-	listCtrl->InsertColumn (4,"File Name", LVCFMT_LEFT, 36 * listCtrl->GetStringWidth ("M"), 5);
+    listCtrl->InsertColumn (0,"Type", LVCFMT_LEFT, 16 + listCtrl->GetStringWidth ("Type"), 1);
+    listCtrl->InsertColumn (1,"Name", LVCFMT_LEFT, 16 * listCtrl->GetStringWidth ("X"), 2);
+    listCtrl->InsertColumn (2,"Failed Condition", LVCFMT_LEFT, 24 * listCtrl->GetStringWidth ("M"), 3);
+    listCtrl->InsertColumn (3,"Line", LVCFMT_LEFT, 16 + listCtrl->GetStringWidth ("0000"), 4);
+    listCtrl->InsertColumn (4,"File Name", LVCFMT_LEFT, 36 * listCtrl->GetStringWidth ("M"), 5);
 
-	int numberOfCases = 0;
+    int numberOfCases = 0;
 
-	CWinApp* pApp = AfxGetApp();
-	CString lastTestCS = pApp->GetProfileString("Tests", "lastTest");
-	std::string lastTest((LPCSTR) lastTestCS);
-	int sel = -1;
-	for (std::vector<TestInfo>::iterator it = _tests.begin (); it != _tests.end (); ++it)
-	{
-		std::string cbName(it->level*4, ' ');
-		cbName.append(it->pTest->toString());
-		comboBox->AddString (cbName.c_str ());
-		if (sel < 0)
-		{
-			if (lastTest.empty() || lastTest == it->pTest->toString())
-			{
-				_selectedTest = it->pTest;
-				sel = numberOfCases;
-			}
-		}
-		numberOfCases++;
-	}
+    CWinApp* pApp = AfxGetApp();
+    CString lastTestCS = pApp->GetProfileString("Tests", "lastTest");
+    std::string lastTest((LPCSTR) lastTestCS);
+    int sel = -1;
+    for (std::vector<TestInfo>::iterator it = _tests.begin (); it != _tests.end (); ++it)
+    {
+        std::string cbName(it->level*4, ' ');
+        cbName.append(it->pTest->toString());
+        comboBox->AddString (cbName.c_str ());
+        if (sel < 0)
+        {
+            if (lastTest.empty() || lastTest == it->pTest->toString())
+            {
+                _selectedTest = it->pTest;
+                sel = numberOfCases;
+            }
+        }
+        numberOfCases++;
+    }
 
-	if (numberOfCases > 0)
-	{
-		if (sel < 0)
-		{
-			_selectedTest = _tests[0].pTest;
-			sel = 0;
-		}
-		comboBox->SetCurSel (sel);
-	}
-	else
-	{
-		beRunDisabled ();
-	}
-	CWnd *pProgress = GetDlgItem(IDC_PROGRESS);
-	CRect rect;
-	pProgress->GetWindowRect(&rect);
-	_testsProgress = new ProgressBar (this, rect);
+    if (numberOfCases > 0)
+    {
+        if (sel < 0)
+        {
+            _selectedTest = _tests[0].pTest;
+            sel = 0;
+        }
+        comboBox->SetCurSel (sel);
+    }
+    else
+    {
+        beRunDisabled ();
+    }
+    CWnd *pProgress = GetDlgItem(IDC_PROGRESS);
+    CRect rect;
+    pProgress->GetWindowRect(&rect);
+    _testsProgress = new ProgressBar (this, rect);
 
-	CButton* autoRunBtn = (CButton*) GetDlgItem(IDC_CHK_AUTORUN);
-	autoRunBtn->SetCheck(pApp->GetProfileInt("Tests", "autoRun", BST_UNCHECKED));
+    CButton* autoRunBtn = (CButton*) GetDlgItem(IDC_CHK_AUTORUN);
+    autoRunBtn->SetCheck(pApp->GetProfileInt("Tests", "autoRun", BST_UNCHECKED));
 
-	reset ();
+    reset ();
 
-	if (autoRunBtn->GetCheck() == BST_CHECKED)
-	{
-		OnRun();
-	}
+    if (autoRunBtn->GetCheck() == BST_CHECKED)
+    {
+        OnRun();
+    }
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-					// EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 
@@ -141,8 +142,8 @@ TestRunnerDlg::~TestRunnerDlg ()
 
 void TestRunnerDlg::OnRun()
 {
-	if (_selectedTest == 0)
-		return;
+    if (_selectedTest == 0)
+        return;
 
     freeState       ();
     reset           ();
@@ -212,7 +213,7 @@ void TestRunnerDlg::addError (TestResult *result, Test *test, CppUnitException *
     addListEntry ("Error", result, test, e);
     _errors++;
 
-	_currentTest = 0;
+    _currentTest = 0;
     updateCountsDisplay ();
 
 }
@@ -223,7 +224,7 @@ void TestRunnerDlg::addFailure (TestResult *result, Test *test, CppUnitException
     addListEntry ("Failure", result, test, e);
     _failures++;
 
-	_currentTest = 0;
+    _currentTest = 0;
     updateCountsDisplay ();
 
 }
@@ -231,16 +232,16 @@ void TestRunnerDlg::addFailure (TestResult *result, Test *test, CppUnitException
 
 void TestRunnerDlg::startTest(Test* test)
 {
-	_currentTest = test;
-	updateCountsDisplay();
+    _currentTest = test;
+    updateCountsDisplay();
 }
 
 
 void TestRunnerDlg::endTest (TestResult *result, Test *test)
 {
-	if (_selectedTest == 0)
-		return;
-	_currentTest = 0;
+    if (_selectedTest == 0)
+        return;
+    _currentTest = 0;
 
     _testsRun++;
     updateCountsDisplay ();
@@ -336,11 +337,11 @@ void TestRunnerDlg::updateCountsDisplay ()
     argumentString.Format ("%d", _failures);
     statFailures    ->SetWindowText (argumentString);
 
-	if (_currentTest)
-		argumentString.Format ("Execution Time: %3.3lf seconds, Current Test: %s", (_testEndTime - _testStartTime) / 1000.0, _currentTest->toString().c_str());
-	else
-		argumentString.Format ("Execution Time: %3.3lf seconds", (_testEndTime - _testStartTime) / 1000.0);
-		
+    if (_currentTest)
+        argumentString.Format ("Execution Time: %3.3lf seconds, Current Test: %s", (_testEndTime - _testStartTime) / 1000.0, _currentTest->toString().c_str());
+    else
+        argumentString.Format ("Execution Time: %3.3lf seconds", (_testEndTime - _testStartTime) / 1000.0);
+
     editTime        ->SetWindowText (argumentString);
 
 
@@ -376,8 +377,8 @@ void TestRunnerDlg::OnSelchangeComboTest()
     {
         _selectedTest = (_tests.begin () + currentSelection)->pTest;
         beIdle ();
-		CWinApp* pApp = AfxGetApp();
-		pApp->WriteProfileString("Tests", "lastTest", _selectedTest->toString().c_str());
+        CWinApp* pApp = AfxGetApp();
+        pApp->WriteProfileString("Tests", "lastTest", _selectedTest->toString().c_str());
     }
     else
     {
@@ -395,8 +396,8 @@ void TestRunnerDlg::OnSelchangeComboTest()
 void TestRunnerDlg::OnBnClickedAutorun()
 {
     CButton   *autoRunBtn = (CButton *)GetDlgItem (IDC_CHK_AUTORUN);
-	CWinApp* pApp = AfxGetApp();
-	pApp->WriteProfileInt("Tests", "autoRun", autoRunBtn->GetCheck());
+    CWinApp* pApp = AfxGetApp();
+    pApp->WriteProfileInt("Tests", "autoRun", autoRunBtn->GetCheck());
 }
 
 
@@ -410,29 +411,29 @@ void TestRunnerDlg::OnPaint()
 
 void TestRunnerDlg::setTests(const std::vector<Test*>& tests)
 {
-	_tests.clear();
-	for (std::vector<Test*>::const_iterator it = tests.begin(); it != tests.end(); ++it)
-	{
-		addTest(*it, 0);
-	}
+    _tests.clear();
+    for (std::vector<Test*>::const_iterator it = tests.begin(); it != tests.end(); ++it)
+    {
+        addTest(*it, 0);
+    }
 }
 
 
 void TestRunnerDlg::addTest(Test* pTest, int level)
 {
-	TestInfo ti;
-	ti.pTest = pTest;
-	ti.level = level;
-	_tests.push_back(ti);
-	TestSuite* pSuite = dynamic_cast<TestSuite*>(pTest);
-	if (pSuite)
-	{
-		const std::vector<Test*>& tests = pSuite->tests();
-		for (std::vector<Test*>::const_iterator it = tests.begin(); it != tests.end(); ++it)
-		{
-			addTest(*it, level + 1);
-		}
-	}
+    TestInfo ti;
+    ti.pTest = pTest;
+    ti.level = level;
+    _tests.push_back(ti);
+    TestSuite* pSuite = dynamic_cast<TestSuite*>(pTest);
+    if (pSuite)
+    {
+        const std::vector<Test*>& tests = pSuite->tests();
+        for (std::vector<Test*>::const_iterator it = tests.begin(); it != tests.end(); ++it)
+        {
+            addTest(*it, level + 1);
+        }
+    }
 }
 
 

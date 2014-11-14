@@ -43,17 +43,17 @@
 class SocketAddressTest: public CppUnit::TestCase
 {
 public:
-	SocketAddressTest(const std::string& name);
-	~SocketAddressTest();
+    SocketAddressTest(const std::string& name);
+    ~SocketAddressTest();
 
-	void testSocketAddress();
-	void testSocketAddress6();
-	void testRelationals();
+    void testSocketAddress();
+    void testSocketAddress6();
+    void testRelationals();
 
-	void setUp();
-	void tearDown();
+    void setUp();
+    void tearDown();
 
-	static CppUnit::Test* suite();
+    static CppUnit::Test* suite();
 
 private:
 };
