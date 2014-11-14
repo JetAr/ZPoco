@@ -39,3 +39,7 @@
 *.manifest
 *.res
 *.dep
+
+# poco specify
+poco-1.4.6p2-all/Foundation/testsuite/bin/
+poco-1.4.6p2-all/lib/
