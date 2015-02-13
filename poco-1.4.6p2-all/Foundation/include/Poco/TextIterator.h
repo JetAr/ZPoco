@@ -74,22 +74,27 @@ class Foundation_API TextIterator
 public:
     TextIterator();
     /// Creates an uninitialized TextIterator.
+	//z 构造一个未初始化的 TextIterator
 
     TextIterator(const std::string& str, const TextEncoding& encoding);
     /// Creates a TextIterator for the given string.
     /// The encoding object must not be deleted as long as the iterator
     /// is in use.
+	//z 为给定的字符串创建一个 TextIterator。
 
     TextIterator(const std::string::const_iterator& begin, const std::string::const_iterator& end, const TextEncoding& encoding);
     /// Creates a TextIterator for the given range.
     /// The encoding object must not be deleted as long as the iterator
     /// is in use.
+	//z 为指定的range创建一个 TextIterator。
 
     TextIterator(const std::string& str);
     /// Creates an end TextIterator for the given string.
+	//z 为给定的字符串创建一个end iterator
 
     TextIterator(const std::string::const_iterator& end);
     /// Creates an end TextIterator.
+	//z 创建一个 end textiterator
 
     ~TextIterator();
     /// Destroys the TextIterator.
